@@ -9,28 +9,67 @@ class SearchSelect extends StatefulWidget {
 }
 
 class _SearchSelectState extends State<SearchSelect> {
-  List<String> group1 = ['medi1', 'medi2', 'medi3', 'medi4'];
-  List<String> group2 = ['alegy1', 'alegy2', 'alegy3', 'alegy4', 'alegy5'];
-  List<String> group3 = ['food1', 'food2', 'food3', 'food4'];
+  List<String> ingredient = [
+    'Tomato',
+    'Beef',
+    'Chicken',
+    'Shrimp',
+    'Broccoli',
+    'Mushroom',
+    'Onion',
+    'Garlic',
+    'Cheese',
+    'Spinach',
+    'Lettuce',
+    'Egg',
+    'Soy Sauce',
+    'Rice',
+    'Pasta',
+    'Bell Pepper',
+    'Olive Oil',
+    'Flour',
+    'Milk',
+    'Sugar',
+    'Salt',
+    'Pepper',
+    'Cilantro',
+    'Lemon',
+    'Ginger',
+    'Basil',
+    'Oregano',
+    'Paprika',
+    'Cumin',
+    'Honey'
+  ];
+  List<String> type = ['korean', 'japanese', 'chinese', 'western'];
+  List<String> distance = ['5', '10', '15', '20', '25', '30'];
 
-  List<String> selectedValue = [];
-
-  void setSelectedValue(List<String> value) {
-    setState(() => selectedValue = value);
-  }
-
+  List<String> selectedIngredient = [];
+  List<String> selectedDistance = [];
+  List<String> selectedType = [];
+  TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
+          padding: const EdgeInsets.all(8),
+          child: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Enter text',
+            ),
+          ),
+        ),
+        Padding(
           padding: const EdgeInsets.fromLTRB(8, 10, 8, 20),
           child: Stack(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Container(
-                  width: 370,
+                  width: 400,
                   decoration: BoxDecoration(
                     border:
                         Border.all(color: Colors.black, width: 2), // 테두리 스타일 지정
@@ -38,16 +77,18 @@ class _SearchSelectState extends State<SearchSelect> {
                         Radius.circular(8)), // 테두리 모서리 둥글게 만듦
                   ),
                   child: Choice<String>.inline(
-                    multiple: true,
+                    //multiple: true,
                     clearable: true,
-                    value: selectedValue,
-                    onChanged: setSelectedValue,
-                    itemCount: group1.length,
+                    value: selectedIngredient,
+                    onChanged: (value) {
+                      setState(() => selectedIngredient = value);
+                    },
+                    itemCount: ingredient.length,
                     itemBuilder: (state, i) {
                       return ChoiceChip(
-                        selected: state.selected(group1[i]),
-                        onSelected: state.onSelected(group1[i]),
-                        label: Text(group1[i]),
+                        selected: state.selected(ingredient[i]),
+                        onSelected: state.onSelected(ingredient[i]),
+                        label: Text(ingredient[i]),
                       );
                     },
                     listBuilder: ChoiceList.createScrollable(
@@ -67,7 +108,7 @@ class _SearchSelectState extends State<SearchSelect> {
                   color: Colors.white,
                   child: const Center(
                     child: Text(
-                      'Group1',
+                      'Ingredient',
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
@@ -83,7 +124,7 @@ class _SearchSelectState extends State<SearchSelect> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Container(
-                  width: 370,
+                  width: 400,
                   decoration: BoxDecoration(
                     border:
                         Border.all(color: Colors.black, width: 2), // 테두리 스타일 지정
@@ -91,16 +132,18 @@ class _SearchSelectState extends State<SearchSelect> {
                         Radius.circular(8)), // 테두리 모서리 둥글게 만듦
                   ),
                   child: Choice<String>.inline(
-                    multiple: true,
+                    //multiple: true,
                     clearable: true,
-                    value: selectedValue,
-                    onChanged: setSelectedValue,
-                    itemCount: group2.length,
+                    value: selectedDistance,
+                    onChanged: (value) {
+                      setState(() => selectedDistance = value);
+                    },
+                    itemCount: distance.length,
                     itemBuilder: (state, i) {
                       return ChoiceChip(
-                        selected: state.selected(group2[i]),
-                        onSelected: state.onSelected(group2[i]),
-                        label: Text(group2[i]),
+                        selected: state.selected(distance[i]),
+                        onSelected: state.onSelected(distance[i]),
+                        label: Text(distance[i]),
                       );
                     },
                     listBuilder: ChoiceList.createScrollable(
@@ -120,7 +163,7 @@ class _SearchSelectState extends State<SearchSelect> {
                   color: Colors.white,
                   child: const Center(
                     child: Text(
-                      'Group2',
+                      'Distance',
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
@@ -136,7 +179,7 @@ class _SearchSelectState extends State<SearchSelect> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Container(
-                  width: 370,
+                  width: 400,
                   decoration: BoxDecoration(
                     border:
                         Border.all(color: Colors.black, width: 2), // 테두리 스타일 지정
@@ -144,16 +187,18 @@ class _SearchSelectState extends State<SearchSelect> {
                         Radius.circular(8)), // 테두리 모서리 둥글게 만듦
                   ),
                   child: Choice<String>.inline(
-                    multiple: true,
+                    //multiple: true,
                     clearable: true,
-                    value: selectedValue,
-                    onChanged: setSelectedValue,
-                    itemCount: group3.length,
+                    value: selectedType,
+                    onChanged: (value) {
+                      setState(() => selectedType = value);
+                    },
+                    itemCount: type.length,
                     itemBuilder: (state, i) {
                       return ChoiceChip(
-                        selected: state.selected(group3[i]),
-                        onSelected: state.onSelected(group3[i]),
-                        label: Text(group3[i]),
+                        selected: state.selected(type[i]),
+                        onSelected: state.onSelected(type[i]),
+                        label: Text(type[i]),
                       );
                     },
                     listBuilder: ChoiceList.createScrollable(
@@ -173,7 +218,7 @@ class _SearchSelectState extends State<SearchSelect> {
                   color: Colors.white,
                   child: const Center(
                     child: Text(
-                      'Group3',
+                      'Type',
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
@@ -182,10 +227,16 @@ class _SearchSelectState extends State<SearchSelect> {
             ],
           ),
         ),
-        Text(selectedValue.toString()),
         IconButton(
             onPressed: () {
-              Navigator.pop(context, selectedValue);
+              List<String> selectedValues = [];
+              List<String> coor = ["126.808343", "37.675393"];
+              selectedValues.add(_searchController.text);
+              selectedValues.addAll(selectedIngredient);
+              selectedValues.addAll(selectedDistance);
+              selectedValues.addAll(coor);
+              selectedValues.addAll(selectedType);
+              Navigator.pop(context, selectedValues);
             },
             icon: Icon(Icons.search)),
       ],
