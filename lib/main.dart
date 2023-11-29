@@ -8,15 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
 
-late Future<Map<String, dynamic>> _restaurantData;
-
 void main() async {
   await _initialize();
 
   runApp(
     ChangeNotifierProvider(
       create: (context) => MapControllerProvider(),
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Map',
         home: NaverMapApp(),
       ),
@@ -28,7 +26,7 @@ void main() async {
 Future<void> _initialize() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NaverMapSdk.instance.initialize(
-      clientId: 'bhfr4cuhpe', // 클라이언트 ID 설정
+      clientId: '', // 클라이언트 ID 설정
       onAuthFailed: (e) => log("네이버맵 인증오류 : $e", name: "onAuthFailed"));
 }
 
@@ -54,7 +52,6 @@ class _NaverMapAppState extends State<NaverMapApp> {
   List<String> selectedList = [];
   List<Map<String, String>> restaurantList = [];
   List<Map<String, String>> findList = [];
-  late NaverMapController _mapController;
 
   @override
   void initState() {
@@ -63,8 +60,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
   }
 
   Future<void> initializeRestaurantList() async {
-    // API에서 데이터 가져오기
-    const apiUrl = 'http://192.168.0.7:8080/api/restaurants';
+    const apiUrl = 'http://172.30.1.34:8080/api/restaurants';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -86,21 +82,16 @@ class _NaverMapAppState extends State<NaverMapApp> {
         });
       }
     } else {
-      // API 호출 실패 시 에러 처리
       throw Exception('Failed to load restaurant data');
     }
   }
 
   Future<void> findRestaurants(List<String> inputList) async {
     findList = [];
-    print(inputList.length);
-
     var apiUrl =
-        'http://192.168.0.7:8080/api/restaurants?name=${inputList[0]}&tag1=${inputList[1]}&tag2=${inputList[2]},${inputList[3]},${inputList[4]}&tag3=${inputList[5]}';
+        'http://172.30.1.34:8080/api/restaurants?name=${inputList[0]}&tag1=${inputList[1]}&tag2=${inputList[2]},${inputList[3]},${inputList[4]}&tag3=${inputList[5]}';
 
     final response = await http.get(Uri.parse(apiUrl));
-
-    log(apiUrl);
 
     if (response.statusCode == 200) {
       var jsonMap = json.decode(response.body);
@@ -127,8 +118,6 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
   @override
   Widget build(BuildContext context) {
-    // NaverMapController 객체의 비동기 작업 완료를 나타내는 Completer 생성
-    final Completer<NaverMapController> mapControllerCompleter = Completer();
     final mapControllerProvider = context.watch<MapControllerProvider>();
     final mapController = mapControllerProvider.mapController;
 
@@ -136,7 +125,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text('Category Map'),
+          title: const Text('Allergy-Free Map'),
           centerTitle: true,
         ),
         body: Column(
@@ -157,15 +146,14 @@ class _NaverMapAppState extends State<NaverMapApp> {
 
                       setState(() {
                         selectedList = result ?? [];
-                        print('$selectedList');
                         addMarker(mapController!, selectedList);
                       });
                     },
-                    icon: Icon(Icons.search))
+                    icon: const Icon(Icons.search))
               ],
             ),
             SizedBox(
-              height: 500,
+              height: 600,
               child: NaverMap(
                 options: const NaverMapViewOptions(
                   indoorEnable: true, // 실내 맵 사용 가능 여부 설정
@@ -173,9 +161,7 @@ class _NaverMapAppState extends State<NaverMapApp> {
                   consumeSymbolTapEvents: false, // 심볼 탭 이벤트 소비 여부 설정
                 ),
                 onMapReady: (controller) async {
-                  _mapController = controller;
                   mapControllerProvider.setMapController(controller);
-                  log("onMapReady", name: "onMapReady");
                 },
               ),
             ),
@@ -189,7 +175,6 @@ class _NaverMapAppState extends State<NaverMapApp> {
       NaverMapController mapController, List<String> select) async {
     if (select.length > 4) {
       await findRestaurants(select);
-      log(findList.toString());
       mapController.clearOverlays();
       for (var restaurant in findList) {
         double latitude = double.parse(restaurant['latitude']!);
@@ -227,9 +212,9 @@ class MySearchScreen extends StatelessWidget {
     final mapController = mapControllerProvider.mapController;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Screen'),
+        title: const Text('Search Screen'),
       ),
-      body: SearchSelect(),
+      body: const SearchSelect(),
     );
   }
 }

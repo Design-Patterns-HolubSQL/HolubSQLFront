@@ -47,7 +47,7 @@ class _SearchSelectState extends State<SearchSelect> {
   List<String> selectedIngredient = [];
   List<String> selectedDistance = [];
   List<String> selectedType = [];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,7 +56,7 @@ class _SearchSelectState extends State<SearchSelect> {
           padding: const EdgeInsets.all(8),
           child: TextField(
             controller: _searchController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Enter text',
             ),
@@ -71,13 +71,10 @@ class _SearchSelectState extends State<SearchSelect> {
                 child: Container(
                   width: 400,
                   decoration: BoxDecoration(
-                    border:
-                        Border.all(color: Colors.black, width: 2), // 테두리 스타일 지정
-                    borderRadius: const BorderRadius.all(
-                        Radius.circular(8)), // 테두리 모서리 둥글게 만듦
+                    border: Border.all(color: Colors.black, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Choice<String>.inline(
-                    //multiple: true,
                     clearable: true,
                     value: selectedIngredient,
                     onChanged: (value) {
@@ -126,13 +123,10 @@ class _SearchSelectState extends State<SearchSelect> {
                 child: Container(
                   width: 400,
                   decoration: BoxDecoration(
-                    border:
-                        Border.all(color: Colors.black, width: 2), // 테두리 스타일 지정
-                    borderRadius: const BorderRadius.all(
-                        Radius.circular(8)), // 테두리 모서리 둥글게 만듦
+                    border: Border.all(color: Colors.black, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Choice<String>.inline(
-                    //multiple: true,
                     clearable: true,
                     value: selectedDistance,
                     onChanged: (value) {
@@ -181,13 +175,10 @@ class _SearchSelectState extends State<SearchSelect> {
                 child: Container(
                   width: 400,
                   decoration: BoxDecoration(
-                    border:
-                        Border.all(color: Colors.black, width: 2), // 테두리 스타일 지정
-                    borderRadius: const BorderRadius.all(
-                        Radius.circular(8)), // 테두리 모서리 둥글게 만듦
+                    border: Border.all(color: Colors.black, width: 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Choice<String>.inline(
-                    //multiple: true,
                     clearable: true,
                     value: selectedType,
                     onChanged: (value) {
@@ -238,7 +229,7 @@ class _SearchSelectState extends State<SearchSelect> {
               selectedValues.addAll(selectedType);
               Navigator.pop(context, selectedValues);
             },
-            icon: Icon(Icons.search)),
+            icon: const Icon(Icons.search)),
       ],
     );
   }
